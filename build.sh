@@ -5,8 +5,14 @@ set -o pipefail # exit on pipe failures
 source make-deterministic.sh
 
 if [[ "x$4" = "x" ]]; then
-  echo "usage: $0 -[windows][,linux][,mac] repository branch [configflags...]" >&2
+  echo "usage: $0 [--clean] --[windows][,linux][,mac] repository branch [configflags...]" >&2
+  echo "arguments must be given in the order shown above" >&2
   exit 1
+fi
+
+if [[ "$1" = "--clean" ]]; then
+  CLEAN=1
+  shift
 fi
 
 if echo "$1" | grep -q windows; then
@@ -42,6 +48,10 @@ build() {
   HOST="$1"
 
   BUILD_DIR="build/$(sanitize "$BRANCH")/$HOST"
+
+  if [[ "$CLEAN" = 1 ]]; then
+    rm -rf "$BUILD_DIR"
+  fi
 
   # Create the build directory, pull updates, and checkout the correct revision.
   if [[ ! -d "$BUILD_DIR" ]]; then
