@@ -70,19 +70,19 @@ build() {
 
     # Download Mac SDK if required
     if echo "$HOST" | grep -q darwin; then
-      if [ ! -e "../../MacOSX10.11.sdk.tar.gz" ]; then
-        wget -P ../.. "https://github.com/MZaf/MacOSX10.11.sdk/raw/master/MacOSX10.11.sdk.tar.gz"
+      if [ ! -e "../../MacOSX10.14.sdk.tar.xz" ]; then
+        wget -P ../.. "https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX10.14.sdk.tar.xz"
       fi
 
-      if [[ "$(sha256sum ../../MacOSX10.11.sdk.tar.gz | cut -d' ' -f1)" != "fc65dd34a3665a549cf2dc005c1d13fcead9ba17cadac6dfd0ebc46435729898" ]]; then
-        rm "../../MacOSX10.11.sdk.tar.gz"
-        echo "build failed due to incorrect checksum for build/MacOSX10.11.sdk.tar.gz" >&2
+      if [[ "$(sha256sum ../../MacOSX10.14.sdk.tar.xz | cut -d' ' -f1)" != "123dcd2e02051bed8e189581f6eea1b04eddd55a80f98960214421404aa64b72" ]]; then
+        rm "../../MacOSX10.14.sdk.tar.xz"
+        echo "build failed due to incorrect checksum for build/MacOSX10.14.sdk.tar.xz" >&2
         exit 1
       fi
 
-      if [[ ! -e depends/SDKs/MacOSX10.11.sdk ]]; then
+      if [[ ! -e depends/SDKs/MacOSX10.14.sdk ]]; then
         mkdir -p depends/SDKs
-        tar -x -C depends/SDKs -f ../../MacOSX10.11.sdk.tar.gz
+        tar -x -C depends/SDKs -f ../../MacOSX10.14.sdk.tar.xz
       fi
     fi
 
