@@ -2,7 +2,7 @@
 set -x # trace execution
 set -e # exit on failure
 set -o pipefail # exit on pipe failures
-source make-deterministic.sh
+source /make-deterministic.sh
 
 if [[ "x$4" = "x" ]]; then
   echo "usage: $0 [--clean] --[windows][,linux][,mac] repository branch [configflags...]" >&2
@@ -108,7 +108,7 @@ build() {
   fi
 
   COMMIT="$(git log -1 --pretty="format:%h")"
-  OUTDIR="$HOME/outputs/$COMMIT/$HOST"
+  OUTDIR="/build/outputs/$COMMIT/$HOST"
   mkdir -p "$OUTDIR"
   cp src/{firod,firo-cli,firo-tx}$exe "$OUTDIR"
   if ! (echo "${CONFIGFLAGS[*]}" | grep -q with-gui=no); then

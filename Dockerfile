@@ -42,14 +42,13 @@ RUN update-alternatives --set i686-w64-mingw32-gcc /usr/bin/i686-w64-mingw32-gcc
     && update-alternatives --set x86_64-w64-mingw32-g++ /usr/bin/x86_64-w64-mingw32-g++-posix
 
 RUN useradd -ms /bin/bash firo-builder \
-    && mkdir /home/firo-builder/build /home/firo-builder/outputs \
-    && chown firo-builder:firo-builder /home/firo-builder/build /home/firo-builder/outputs
+    && mkdir /build /build/outputs \
+    && chown -R firo-builder:firo-builder /build
 
-COPY --chown=firo-builder:firo-builder make-deterministic.sh /home/firo-builder/
-COPY --chown=firo-builder:firo-builder build.sh /home/firo-builder/
+COPY --chown=firo-builder:firo-builder make-deterministic.sh /make-deterministic.sh
+COPY --chown=firo-builder:firo-builder build.sh /build.sh
 
-VOLUME /home/firo-builder/outputs
-VOLUME /home/firo-builder/build
+VOLUME /build
 USER firo-builder:firo-builder
-WORKDIR /home/firo-builder
-ENTRYPOINT ["/home/firo-builder/build.sh"]
+WORKDIR /build
+ENTRYPOINT ["/build.sh"]
